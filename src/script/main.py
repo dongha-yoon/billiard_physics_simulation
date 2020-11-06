@@ -12,7 +12,7 @@ B.initPos(pos_x,pos_y,Rb)
 
 # Set Hit position
 phi = 0
-a = 0.0
+a = -0.03
 b = 0.0
 V = 1
 theta = 0
