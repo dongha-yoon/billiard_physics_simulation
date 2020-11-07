@@ -9,7 +9,7 @@ Obstacle = Rb*10000 #The height of obstacles(+rails) are Rb
 
 ## Set grid
 
-SF = 1000; #scale factor
+SF = 3000; #scale factor
 size_x = int(LX*SF)
 size_y = int(LY*SF)
 
@@ -17,30 +17,35 @@ tx = np.arange(0,size_x+1,1)
 ty = np.arange(0,size_y+1,1)
 TX,TY = np.meshgrid(tx,ty)
 
-################
-# Formal Table
-################
-Z = 0.0*TX*TY
-Z[0,:] = Z[:,0] = Z[size_y,:] = Z[:,size_x] = Obstacle
-# cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
-np.save("../data/Formal_Table",Z)
+set_flag = 0
+if set_flag:
+    ################
+    # Formal Table
+    ################
+    padd=10
+    Z = 0.0*TX*TY
+    Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
+    # cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
+    np.save("../data/Formal_Table",Z)
 
-################
-# Ellipse Table
-################
-Z = 0.0*TX*TY
-a = size_x/2
-b = size_y/2
-for ix in range(0,int(size_x/2)):
-    for iy in range(0,int(size_y/2)):
-        if ix**2/a**2+iy**2/b**2 >= 1:
-            Z[int(size_y/2)+iy,int(size_x/2)+ix] = Obstacle
-            Z[int(size_y/2)+iy,int(size_x/2)-ix] = Obstacle
-            Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
-            Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
-# plt.rcParams["figure.figsize"] = (30,20)
-# cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
-np.save("../data/Ellipse_Table",Z)
+    ################
+    # Ellipse Table
+    ################
+    padd=10
+    Z = 0.0*TX*TY
+    a = size_x/2-padd
+    b = size_y/2-padd
+    for ix in range(0,int(size_x/2)):
+        for iy in range(0,int(size_y/2)):
+            if ix**2/a**2+iy**2/b**2 >= 1:
+                Z[int(size_y/2)+iy,int(size_x/2)+ix] = Obstacle
+                Z[int(size_y/2)+iy,int(size_x/2)-ix] = Obstacle
+                Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
+                Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
+    # plt.rcParams["figure.figsize"] = (30,20)
+    # cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
+    np.save("../data/Ellipse_Table",Z)
+    print("Table created!")
 
 
 def print_table(TB,Obj):

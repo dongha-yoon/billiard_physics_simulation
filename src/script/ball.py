@@ -12,8 +12,8 @@ class Ball:
     pos = np.array([0.0,0.0,0.0])
     vel = np.array([0.0,0.0,0.0])
     ang = np.array([0.0,0.0,0.0])
-    def printInfo(self):
-        print(self.pos);print(self.vel);print(self.ang)
+    def printLog(self,file):
+        file.write(str(self.pos)+"\n");file.write(str(self.vel)+"\n");file.write(str(self.ang)+"\n");file.write("\n")
 
     def initPos(self,px,py,pz):
         self.pos[0]=px; self.pos[1]=py; self.pos[2]=pz
@@ -29,12 +29,13 @@ class Ball:
         T     = np.cross(r,F)
         Tconv = np.array([T[0]*np.cos(phi)+T[1]*np.sin(phi),T[0]*np.sin(phi)-T[1]*np.cos(phi),T[2]])
         self.ang   = tc/Ib*Tconv
+
     def proceed(self):
         self.pos = self.pos+self.vel*dt
 
         direction = self.vel/getSize(self.vel)
         rel_vel = self.vel + np.cross(Rb*np.array([0,0,1]),self.ang) #Compute relative velocity between Center-Floor
-        if getSize(rel_vel)==0:#rolling
+        if getSize(rel_vel)==0.0:#rolling
             print("rolling!")
             self.vel = self.vel - fr*G*dt
             temp= self.ang[2];self.ang[2]=0
@@ -45,8 +46,12 @@ class Ball:
             self.ang = self.ang - np.cross(np.array([0,0,1]),direction)*5*fs*G/(2*Rb)*dt
 
         self.ang[2] = self.ang[2] - 5*fsp*G/(2*Rb)*dt
-
-
+        self.truncate()
+   
     def isStop(self):
         return (self.vel[0]+self.vel[1]+self.vel[2])
-
+    
+    def truncate(self):
+        self.pos = np.trunc(self.pos*1e4)*1e-4
+        self.vel = np.trunc(self.vel*1e2)*1e-2
+        self.ang = np.trunc(self.ang*1e2)*1e-2
