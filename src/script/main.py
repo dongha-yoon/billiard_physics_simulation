@@ -12,14 +12,14 @@ B.initPos(pos_x,pos_y,Rb)
 
 # Set Hit position
 phi = np.pi/2
-a = 0.0
+a = 0.03
 b = 0.0
 V = 1
-theta = 0
+theta = np.pi/2.5
 B.hitBall(phi,a,b,V,theta)
 
 ## Create logger
-filename = "../log/Log_{}{}{}{}{}{}{}".format(pos_x,pos_y,phi,a,b,V,theta)
+filename = "../log/Log_X{}_Y{}_p{}_a{}_b{}_V{}_t{}".format(pos_x,pos_y,round(phi,2),a,b,V,round(theta,2))
 log_f = open(filename,"w")
 
 ## Set Table
@@ -27,23 +27,21 @@ log_f = open(filename,"w")
 TB = np.load("../data/Ellipse_Table.npy")
 
 ## Start Simulation
+T_limit = 1; #Time limit in sec
 OUT=0
-print_flag=0
+step_cnt=0
 while B.isStop():
+    step_cnt+=1
+    if step_cnt*dt >= T_limit:
+       break; 
     try:
         B.printLog(log_f)
         OUT+=print_table(TB,B)
         B.proceed()
-    # if B.pos[0]>LX or B.pos[1]>LY or B.pos[0]<0 or B.pos[1]<0 or TB[int(B.pos[1]*SF),int(B.pos[0]*SF)]==Obstacle:
     except IndexError:
-        cs=plt.imshow(OUT)
-        plt.show()
-        print_flag=1
         break
-   
-if not print_flag:
-    cs=plt.imshow(OUT)
-    plt.show()
+cs=plt.imshow(OUT)
+plt.show()
 
 print("program terminated.")
 

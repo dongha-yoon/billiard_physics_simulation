@@ -37,21 +37,20 @@ class Ball:
         rel_vel = self.vel + np.cross(Rb*np.array([0,0,1]),self.ang) #Compute relative velocity between Center-Floor
         if getSize(rel_vel)==0.0:#rolling
             print("rolling!")
-            self.vel = self.vel - fr*G*dt
+            self.vel = self.vel - direction*fr*G*dt
             temp= self.ang[2];self.ang[2]=0
             self.ang = self.ang/getSize(self.ang) * getSize(self.vel)/Rb
             self.ang[2] = temp
         else :#sliding
-            self.vel = self.vel - fs*G*dt
+            self.vel = self.vel - direction*fs*G*dt
             self.ang = self.ang - np.cross(np.array([0,0,1]),direction)*5*fs*G/(2*Rb)*dt
 
         self.ang[2] = self.ang[2] - 5*fsp*G/(2*Rb)*dt
-        self.truncate()
-   
+        self.round_vector()
+
     def isStop(self):
-        return (self.vel[0]+self.vel[1]+self.vel[2])
-    
-    def truncate(self):
-        self.pos = np.trunc(self.pos*1e4)*1e-4
-        self.vel = np.trunc(self.vel*1e2)*1e-2
-        self.ang = np.trunc(self.ang*1e2)*1e-2
+        return round(self.vel[0]+self.vel[1]+self.vel[2],5)
+
+    def round_vector(self):
+        np.round(self.vel,10)
+        np.round(self.ang,10)

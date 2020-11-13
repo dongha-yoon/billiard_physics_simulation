@@ -9,7 +9,7 @@ Obstacle = Rb*10000 #The height of obstacles(+rails) are Rb
 
 ## Set grid
 
-SF = 3000; #scale factor
+SF = 1000; #scale factor
 size_x = int(LX*SF)
 size_y = int(LY*SF)
 
