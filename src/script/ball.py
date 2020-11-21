@@ -4,7 +4,7 @@ def getSize(vec):
     sq_sum = 0
     for i in vec:
         sq_sum+= i**2
-    return np.sqrt(sq_sum)
+    return round(np.sqrt(sq_sum),4)
 
 
 #Define Billiard ball object
@@ -13,7 +13,10 @@ class Ball:
     vel = np.array([0.0,0.0,0.0])
     ang = np.array([0.0,0.0,0.0])
     def printLog(self,file):
-        file.write(str(self.pos)+"\n");file.write(str(self.vel)+"\n");file.write(str(self.ang)+"\n");file.write("\n")
+        file.write(str(np.round(self.pos,4))+"\n")
+        file.write(str(np.round(self.vel,4))+"\n")
+        file.write(str(np.round(self.ang,4))+"\n")
+        file.write("\n")
 
     def initPos(self,px,py,pz):
         self.pos[0]=px; self.pos[1]=py; self.pos[2]=pz
@@ -32,11 +35,11 @@ class Ball:
 
     def proceed(self):
         self.pos = self.pos+self.vel*dt
-
         direction = self.vel/getSize(self.vel)
-        rel_vel = self.vel + np.cross(Rb*np.array([0,0,1]),self.ang) #Compute relative velocity between Center-Floor
+        
+        #Compute relative velocity between Center-Floor
+        rel_vel = self.vel + np.cross(Rb*np.array([0,0,1]),self.ang)
         if getSize(rel_vel)==0.0:#rolling
-            print("rolling!")
             self.vel = self.vel - direction*fr*G*dt
             temp= self.ang[2];self.ang[2]=0
             self.ang = self.ang/getSize(self.ang) * getSize(self.vel)/Rb
@@ -46,11 +49,12 @@ class Ball:
             self.ang = self.ang - np.cross(np.array([0,0,1]),direction)*5*fs*G/(2*Rb)*dt
 
         self.ang[2] = self.ang[2] - 5*fsp*G/(2*Rb)*dt
-        self.round_vector()
-
+    
+    #def detect_collision(self):
+        #Not implemented Yet
+    
+    #def collide(self):
+        #Not implemented Yet
+    
     def isStop(self):
         return round(self.vel[0]+self.vel[1]+self.vel[2],5)
-
-    def round_vector(self):
-        np.round(self.vel,10)
-        np.round(self.ang,10)

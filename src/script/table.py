@@ -25,7 +25,6 @@ if set_flag:
     padd=10
     Z = 0.0*TX*TY
     Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
-    # cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
     np.save("../data/Formal_Table",Z)
 
     ################
@@ -42,9 +41,26 @@ if set_flag:
                 Z[int(size_y/2)+iy,int(size_x/2)-ix] = Obstacle
                 Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
                 Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
-    # plt.rcParams["figure.figsize"] = (30,20)
-    # cs=plt.imshow(Z); plt.colorbar(cs); plt.show();plt.clf()
     np.save("../data/Ellipse_Table",Z)
+    
+
+    ################
+    # Table With Obstacles
+    ################
+    padd=10
+    Z = 0.0*TX*TY
+    Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
+    # Z[int(size_x*0.5):int(size_x*0.6),int(size_y*0.3):int(size_y*0.4)] = Obstacle
+    Z[1000:1300,1000:1200] = Obstacle
+    for ix in range(0,int(size_x/2)):
+        for iy in range(0,int(size_y/2)):
+            if ix**2+iy**2 <= 2000:
+                Z[int(size_y/2)+iy,int(size_x/2)+ix] = Obstacle
+                Z[int(size_y/2)+iy,int(size_x/2)-ix] = Obstacle
+                Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
+                Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
+    np.save("../data/Table_O1",Z)
+    cs=plt.imshow(Z); plt.show();plt.clf()
     print("Table created!")
 
 
