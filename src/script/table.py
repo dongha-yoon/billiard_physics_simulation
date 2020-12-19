@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # File_output_path = "/mnt/c/Users/aero5/Desktop/2020 Fall/Computaional_physics_project/src/data/"
-Obstacle = Rb*10000 #The height of obstacles(+rails) are Rb
+Obstacle = Rb*500 #The height of obstacles(+rails) are Rb
 
 ## Set grid
 
@@ -22,7 +22,7 @@ if set_flag:
     ################
     # Formal Table
     ################
-    padd=10
+    padd=30
     Z = 0.0*TX*TY
     Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
     np.save("../data/Formal_Table",Z)
@@ -30,7 +30,7 @@ if set_flag:
     ################
     # Ellipse Table
     ################
-    padd=10
+    padd=30
     Z = 0.0*TX*TY
     a = size_x/2-padd
     b = size_y/2-padd
@@ -47,7 +47,7 @@ if set_flag:
     ################
     # Table With Obstacles
     ################
-    padd=10
+    padd=30
     Z = 0.0*TX*TY
     Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
     # Z[int(size_x*0.5):int(size_x*0.6),int(size_y*0.3):int(size_y*0.4)] = Obstacle
@@ -60,7 +60,6 @@ if set_flag:
                 Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
                 Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
     np.save("../data/Table_O1",Z)
-    cs=plt.imshow(Z); plt.show();plt.clf()
     print("Table created!")
 
 
