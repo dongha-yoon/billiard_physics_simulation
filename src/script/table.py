@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # File_output_path = "/mnt/c/Users/aero5/Desktop/2020 Fall/Computaional_physics_project/src/data/"
-Obstacle = Rb*500 #The height of obstacles(+rails) are Rb
+Obstacle = Rb*1000 #The height of obstacles(+rails) are Rb
 
 ## Set grid
 
@@ -45,7 +45,7 @@ if set_flag:
     
 
     ################
-    # Table With Obstacles
+    # Table With Obstacles 1
     ################
     padd=30
     Z = 0.0*TX*TY
@@ -60,6 +60,20 @@ if set_flag:
                 Z[int(size_y/2)-iy,int(size_x/2)+ix] = Obstacle
                 Z[int(size_y/2)-iy,int(size_x/2)-ix] = Obstacle
     np.save("../data/Table_O1",Z)
+
+    ################
+    # Table With Obstacles 2
+    ################
+    padd=30
+    Z = 0.0*TX*TY
+    Z[0:padd,:] = Z[:,0:padd] = Z[size_y-padd:,:] = Z[:,size_x-padd:] = Obstacle
+    
+    Z[int(0.25*size_y):int(0.45*size_y),int(size_x/2-padd):int(size_x/2+padd)] = Obstacle
+    Z[int(0.55*size_y):int(0.75*size_y),int(size_x/2-padd):int(size_x/2+padd)] = Obstacle
+    Z[int(0.45*size_y):int(0.55*size_y),int(size_x/4-padd):int(size_x/4+padd)] = Obstacle
+    Z[int(0.45*size_y):int(0.55*size_y),int(size_x/4*3-padd):int(size_x/4*3+padd)] = Obstacle
+    np.save("../data/Table_O2",Z)    
+
     print("Table created!")
 
 

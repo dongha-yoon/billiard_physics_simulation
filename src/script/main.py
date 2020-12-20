@@ -3,7 +3,8 @@ from table import *
 import os
 ## Main Procedure
 
-def do_simulation(phi,V):
+def do_simulation(phi,V,T_name):
+    Error_NO = 0
     ## Set initial position
     pos_x = LX/2
     pos_y = LY/2
@@ -19,14 +20,7 @@ def do_simulation(phi,V):
     B.hitBall(phi,a,b,V,theta)
 
     ## Select Table
-    T_name = "Formal_Table" #"Table_O1"
     TB = np.load("../data/"+T_name+".npy")
-
-    ## Create logger
-    log_dir = "../log/Log_X{}_Y{}_p{}_a{}_b{}_V{}_t{}/".format(pos_x,pos_y,round(phi,2),a,b,V,round(theta,2))
-    if not(os.path.isdir(log_dir)):
-            os.mkdir(log_dir)
-    log_f = open(log_dir+T_name+"_log.txt","w")
 
     ## Start Simulation
     T_limit = 3; #Time limit in sec
@@ -41,19 +35,42 @@ def do_simulation(phi,V):
             # B.printLog(log_f)
             OUT += print_table(TB,B)
             B.proceed()
-            if not state:
-                state = B.detect_collision(TB)
-            else:
+            isCollide,angle = B.detect_collision(TB)
+            if not state and isCollide:
+                B.collide(angle)
                 state = True
+            elif not isCollide:
+                state = False
+
         except IndexError:
-            print("Exception: Out of Range")
+            Error_NO = 1
+            print("Exception: Out of Range, V:{},phi:{}".format(V,phi))
             break
+        except ValueError:
+            Error_NO = 2
+            print("Exception: Value error, V:{},phi:{}".format(V,phi))
+            return
+
+    ## Create logger
+    # log_dir = "../log/Log_X{}_Y{}_p{}_a{}_b{}_V{}_t{}/".format(pos_x,pos_y,round(phi,2),a,b,V,round(theta,2))
+    log_dir = "../log/Log_p{}_V{}/".format(round(phi,2),V)
+    if not(os.path.isdir(log_dir)):
+            os.mkdir(log_dir)
+    log_f = open(log_dir+T_name+"_log.txt","w")
 
     cs=plt.imshow(OUT);plt.draw()
-    plt.savefig(log_dir+T_name+"_log.png")
-    log_f.write("# of collision:"+B.collision_count)
+    plt.savefig(log_dir+T_name+"_log.png");plt.clf()
+
+    if Error_NO==1:
+        log_f.write("\nException: IndexError")
+        return 999999
+    if Error_NO==2:
+        log_f.write("\nException: ValueError")
+        return 999999
+
+    log_f.write("# of collision:"+str(B.collision_count))
+
     log_f.close()
     return B.collision_count
 
-print("program terminated.")
 

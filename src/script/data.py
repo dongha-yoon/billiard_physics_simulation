@@ -28,5 +28,5 @@ Ib = 2.0/5*Mb*Rb**2 #Moment of Inertia
 
 #time
 tc = 200e-6 #Collision time
-dt = 0.001    #Time difference
+dt = 0.005    #Time difference
 

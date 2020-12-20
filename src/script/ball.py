@@ -63,13 +63,12 @@ class Ball:
                 flag = True
                 angle.append(i)
         if flag:
-            angle = (angle[0]+angle[-1])/2
-            point = self.pos[0]+Rb*np.cos(angle),self.pos[1]+Rb*np.sin(angle)
-
-            self.collision_count +=1
-            self.collide(-angle)
+            angle_ = (angle[0]+angle[-1])/2
+            return [flag,-angle_]
+        return [flag,0]
 
     def collide(self,angle):
+        self.collision_count +=1
         # print("=====ccc======")
         # print("pos: ",self.pos)
         # print("ang: ",angle/np.pi,"pi")

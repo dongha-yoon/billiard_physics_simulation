@@ -1,0 +1,2 @@
+# of collision:4
+Exception: IndexError
